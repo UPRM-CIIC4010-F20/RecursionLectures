@@ -57,7 +57,6 @@ bool isPalindrome(string word) {
 
 vector<string>* permutations(string word) 
 {
-
     vector<string>* result = new vector<string>;
     if (word.length() <= 1) {
         result->push_back(word);
@@ -68,8 +67,13 @@ vector<string>* permutations(string word)
         string leftPart = word.substr(0,i);
         string rightPart = word.substr(i+1,word.length()-i-1);
         string shorterWord = leftPart + rightPart;
+        vector<string>* shorterPerms = permutations(shorterWord);
+        for (string p : *shorterPerms) {
+            result->push_back(nextLetter + p);
+        }
+        delete shorterPerms;
     }
-
+    return result;
 }
 
 
@@ -101,5 +105,9 @@ int main() {
     cout << "tacocats: " << (isPalindrome("tacocats") ? "true" : "false") << endl;
 
     vector<string>* perms = permutations("eat");
+
+    for (string s : *perms) {
+        cout << "Next Perm of eat: " << s << endl;
+    }
 
 }
